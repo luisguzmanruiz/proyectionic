@@ -1,18 +1,43 @@
 <ion-header [translucent]="true">
-  <ion-toolbar  color="success">
-    <ion-title>
-     ProyectoIonic
+  <ion-toolbar color="success">
+    <ion-title class="ion-text-center">
+      Mi lista
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-
 <ion-content [fullscreen]="true">
-    <ion-item>    
-        <ion-input type="text" 
-          placeholder="ingresar una nueva tarea..." 
-          name="task" [(ngModel)] ="newTaskStr"/>
-      <ion-button> <ion-icon name="add-outline"></ion-icon></ion-button>
-   
-    </ion-item>
+
+  <ion-item>
+    <ion-input type="text"
+      placeholder="ingresar una nueva tarea..."
+      name="task"
+      [(ngModel)]="newTaskStr"/>
+    <ion-button (click)="addTask()" [disabled]="!newTaskStr">
+      <ion-icon name="add-outline"></ion-icon>
+    </ion-button>
+  </ion-item>
+
+  <ion-list>
+    <ion-reorder-group (ionItemReorder)="actualizarPosiciones($event)" [disabled]="false">
+      @for (tarea of task; track tarea.id) {
+        <ion-item-sliding>
+          <ion-item>
+            <ion-label>
+              <h2>{{ tarea.titulo }}</h2>
+              <p>{{ tarea.descripcion }}</p>
+            </ion-label>
+            <ion-reorder slot="end"></ion-reorder>
+          </ion-item>
+          <ion-item-options side="end">
+            <ion-item-option color="danger" (click)="confirmDelete(tarea.id)">
+              <ion-icon name="trash-outline"></ion-icon>
+              Eliminar
+            </ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+      }
+    </ion-reorder-group>
+  </ion-list>
+
 </ion-content>
